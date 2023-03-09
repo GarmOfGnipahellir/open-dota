@@ -1,0 +1,11 @@
+[package]
+name = "open_dota"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+open_dota_server = { path = "../open_dota_server" }
+bevy = "0.10"
+bevy_quinnet = "0.4.0"
