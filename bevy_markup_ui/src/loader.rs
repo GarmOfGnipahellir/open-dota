@@ -1,18 +1,14 @@
 use anyhow::Result;
 use bevy::{
     asset::{AssetLoader, AssetPath, LoadContext, LoadedAsset},
-    ecs::world::EntityMut,
     prelude::*,
     reflect::TypeRegistryArc,
     utils::BoxedFuture,
 };
-use bevy_ecss::StyleSheet;
+use bevy_ecss::{Class, StyleSheet};
 use scraper::{ElementRef, Html};
 
-use crate::{
-    widget::Widget,
-    widget_registry::{AppWidgetRegistry, WidgetRegistryArc},
-};
+use crate::widget_registry::{AppWidgetRegistry, WidgetRegistryArc};
 
 pub struct HtmlLoader {
     widget_registry: WidgetRegistryArc,
@@ -55,11 +51,17 @@ impl AssetLoader for HtmlLoader {
             let elem = ElementRef::wrap(html.root_element().first_child().unwrap()).unwrap();
             let name = elem.value().name();
             root.with_children(|parent| {
-                widget_registry
+                let mut entity = widget_registry
                     .get_with_name(name)
                     .unwrap()
                     .widget()
                     .spawn(parent);
+                if let Some(id) = elem.value().id() {
+                    entity.insert(Name::new(id.to_string()));
+                }
+                for class in elem.value().classes() {
+                    entity.insert(Class::new(class.to_string()));
+                }
             });
 
             let type_registry = AppTypeRegistry(self.type_registry.clone());
