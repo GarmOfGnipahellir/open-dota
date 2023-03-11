@@ -1,3 +1,6 @@
 [workspace]
-members = ["open_dota", "open_dota_server"]
+members = ["open_dota", "open_dota_server", "bevy_markup_ui"]
 resolver = "2"
+
+[workspace.dependencies]
+bevy = "0.10"
