@@ -9,5 +9,7 @@ edition = "2021"
 bevy = { workspace = true }
 bevy_ecss = "0.3"
 scraper = "0.15"
+ego-tree = "*"
 anyhow = "1.0"
 parking_lot = "0.12"
+thiserror = "1.0"

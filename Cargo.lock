@@ -628,9 +628,15 @@ dependencies = [
  "anyhow",
  "bevy",
  "bevy_ecss",
+ "ego-tree",
  "parking_lot",
  "scraper",
+ "thiserror",
 ]
+
+[[package]]
+name = "bevy_markup_ui_derive"
+version = "0.1.0"
 
 [[package]]
 name = "bevy_math"

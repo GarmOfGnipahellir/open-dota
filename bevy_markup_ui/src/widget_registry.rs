@@ -6,7 +6,10 @@ use bevy::{
 };
 use parking_lot::{RwLock, RwLockReadGuard, RwLockWriteGuard};
 
-use crate::{widget::Widget, widgets::Node};
+use crate::{
+    widget::Widget,
+    widgets::{Button, Node, Text},
+};
 
 pub struct WidgetRegistry {
     registrations: HashMap<TypeId, WidgetRegistration>,
@@ -51,6 +54,8 @@ impl WidgetRegistry {
     pub fn new() -> Self {
         let mut registry = Self::empty();
         registry.register::<Node>();
+        registry.register::<Button>();
+        registry.register::<Text>();
         registry
     }
 
