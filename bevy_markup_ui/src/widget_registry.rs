@@ -1,9 +1,6 @@
 use std::{any::TypeId, sync::Arc};
 
-use bevy::{
-    prelude::*,
-    utils::{HashMap, HashSet},
-};
+use bevy::{prelude::*, utils::HashMap};
 use parking_lot::{RwLock, RwLockReadGuard, RwLockWriteGuard};
 
 use crate::{
@@ -14,7 +11,6 @@ use crate::{
 pub struct WidgetRegistry {
     registrations: HashMap<TypeId, WidgetRegistration>,
     name_to_id: HashMap<String, TypeId>,
-    ambiguous_names: HashSet<String>,
 }
 
 #[derive(Default, Clone)]
@@ -47,7 +43,6 @@ impl WidgetRegistry {
         Self {
             registrations: Default::default(),
             name_to_id: Default::default(),
-            ambiguous_names: Default::default(),
         }
     }
 
@@ -77,7 +72,7 @@ impl WidgetRegistry {
     pub fn get_with_name(&self, name: &str) -> Option<&WidgetRegistration> {
         self.name_to_id
             .get(&name.to_lowercase())
-            .and_then(|type_id| self.registrations.get(type_id))
+            .and_then(|type_id| self.get(*type_id))
     }
 }
 

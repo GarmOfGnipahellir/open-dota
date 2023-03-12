@@ -25,7 +25,7 @@ fn get_widget_registration(ident: &Ident) -> TokenStream {
     quote! {
         impl GetWidgetRegistration for #ident {
             fn get_widget() -> Box<dyn Widget> {
-                Box::new(Self)
+                Box::new(Self::default())
             }
 
             fn get_widget_registration() -> WidgetRegistration {

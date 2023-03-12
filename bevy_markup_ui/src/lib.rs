@@ -1,5 +1,4 @@
 mod loader;
-mod spawner;
 mod widget;
 mod widget_registry;
 mod widgets;

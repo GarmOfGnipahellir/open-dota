@@ -1,4 +1,28 @@
 .box {
   width: 100%;
-  background-color: #000000;
+  align-items: center;
+  justify-content: center;
+  background-color: #515151;
+}
+
+text {
+  font: "Roboto-Regular.ttf";
+  font-size: 40px;
+  color: #e6e6e6;
+}
+
+button {
+  width: 150px;
+  height: 65px;
+  align-items: center;
+  justify-content: center;
+  background-color: #262626;
+}
+
+button.hover {
+  background-color: #404040;
+}
+
+button.press {
+  background-color: #5A5A5A;
 }

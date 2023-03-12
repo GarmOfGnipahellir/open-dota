@@ -66,6 +66,8 @@ fn load_html<'a>(
     let html_str = std::str::from_utf8(bytes)?;
     let html = Html::parse_fragment(html_str);
 
+    dbg!(&html);
+
     for err in &html.errors {
         error!("{err}");
     }
@@ -110,6 +112,7 @@ fn load_node(
     };
     let element = element_ref.value();
     let name = element.name();
+    let text_content = text_content(&element_ref);
 
     if name == "link" {
         return load_link(element, parent, dependencies, load_context);
@@ -122,13 +125,19 @@ fn load_node(
             warn!("unkown widget of name: {}", name);
             return;
         };
+
         let mut entity = widget.spawn(parent);
+        
+        if let Some((content, mut text)) = text_content.zip(entity.get_mut::<Text>()) {
+            text.sections = vec![TextSection::new(content, Default::default())];
+        }
+
         if let Some(id) = element.id() {
             entity.insert(Name::new(id.to_string()));
         }
-        for class in element.classes() {
-            entity.insert(Class::new(class.to_string()));
-        }
+
+        let classes = element.classes().fold(String::new(), |acc, class| acc + class);
+        entity.insert(Class::new(classes));
 
         for child in element_ref.children() {
             if let Err(err) = load_node(
@@ -174,4 +183,12 @@ fn load_link(
     }
 
     Ok(())
+}
+
+fn text_content(element_ref: &ElementRef) -> Option<String> {
+    let texts = element_ref
+        .children()
+        .filter_map(|child| child.value().as_text())
+        .fold(String::new(), |acc, text| acc + &text.text.to_string());
+    (!texts.is_empty()).then(|| texts)
 }
