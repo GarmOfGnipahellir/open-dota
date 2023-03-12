@@ -1,6 +1,9 @@
 use std::borrow::Cow;
 
-use bevy::prelude::{Component, Deref, Handle, Name, Reflect, ReflectComponent};
+use bevy::{
+    prelude::{Component, Deref, Handle, Name, Reflect, ReflectComponent},
+    ui::Interaction,
+};
 
 use crate::StyleSheetAsset;
 
@@ -104,5 +107,15 @@ impl MatchSelectorElement for Class {
 impl MatchSelectorElement for Name {
     fn matches(&self, element: &str) -> bool {
         self.as_str() == element
+    }
+}
+
+impl MatchSelectorElement for Interaction {
+    fn matches(&self, element: &str) -> bool {
+        match self {
+            Interaction::Clicked => element == "active",
+            Interaction::Hovered => element == "hover",
+            Interaction::None => false,
+        }
     }
 }

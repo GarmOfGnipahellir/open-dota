@@ -73,6 +73,7 @@ impl<'i> QualifiedRuleParser<'i> for StyleSheetParser {
         let mut elements = smallvec![];
 
         let mut next_is_class = false;
+        let mut next_is_psuedo_class = false;
 
         while let Ok(token) = input.next_including_whitespace() {
             use cssparser::Token::*;
@@ -81,6 +82,9 @@ impl<'i> QualifiedRuleParser<'i> for StyleSheetParser {
                     if next_is_class {
                         next_is_class = false;
                         elements.push(SelectorElement::Class(v.to_string()));
+                    } else if next_is_psuedo_class {
+                        next_is_psuedo_class = false;
+                        elements.push(SelectorElement::PsuedoClass(v.to_string()))
                     } else {
                         elements.push(SelectorElement::Component(v.to_string()));
                     }
@@ -94,6 +98,7 @@ impl<'i> QualifiedRuleParser<'i> for StyleSheetParser {
                 }
                 WhiteSpace(_) => elements.push(SelectorElement::Child),
                 Delim(c) if *c == '.' => next_is_class = true,
+                Colon => next_is_psuedo_class = true,
                 _ => {
                     let token = token.to_css_string();
                     return Err(input.new_custom_error(EcssError::UnexpectedToken(token)));
@@ -273,6 +278,31 @@ mod tests {
 
         match node[0] {
             SelectorElement::Component(name) => assert_eq!(name, "button"),
+            _ => panic!("Should have a class selector"),
+        }
+
+        assert!(rule.properties.is_empty(), "Should have no token");
+    }
+
+    #[test]
+    fn parse_single_component_psuedo_class_no_property() {
+        let rules = StyleSheetParser::parse("button:hover {}");
+        assert_eq!(rules.len(), 1, "Should have a single rule");
+
+        let rule = &rules[0];
+        let tree = rule.selector.get_parent_tree();
+        assert_eq!(tree.len(), 1, "Should have a single selector node");
+
+        let node = &tree[0];
+        assert_eq!(node.len(), 2, "Should have two selectors");
+
+        match node[0] {
+            SelectorElement::Component(name) => assert_eq!(name, "button"),
+            _ => panic!("Should have a class selector"),
+        }
+
+        match node[1] {
+            SelectorElement::PsuedoClass(name) => assert_eq!(name, "hover"),
             _ => panic!("Should have a class selector"),
         }
 

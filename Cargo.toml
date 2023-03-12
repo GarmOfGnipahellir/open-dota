@@ -4,6 +4,7 @@ members = [
     "open_dota_server",
     "bevy_markup_ui",
     "bevy_markup_ui_derive",
+    "bevy_ecss",
 ]
 resolver = "2"
 

@@ -1,0 +1,15 @@
+button {
+  width: 150px;
+  height: 65px;
+  align-items: center;
+  justify-content: center;
+  background-color: #262626;
+}
+
+button:hover {
+  background-color: #404040;
+}
+
+button:active {
+  background-color: #5a5a5a;
+}

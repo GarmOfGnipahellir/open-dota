@@ -4,7 +4,7 @@ use bevy::{
         debug, error, trace, AssetEvent, Assets, Changed, Children, Component, Deref, DerefMut,
         Entity, EventReader, Mut, Name, Query, Res, ResMut, Resource, With, World,
     },
-    ui::Node,
+    ui::{Interaction, Node},
     utils::HashMap,
 };
 use smallvec::SmallVec;
@@ -42,6 +42,7 @@ pub(crate) struct CssQueryParam<'w, 's> {
     >,
     names: Query<'w, 's, (Entity, &'static Name)>,
     classes: Query<'w, 's, (Entity, &'static Class)>,
+    interactions: Query<'w, 's, (Entity, &'static Interaction)>,
     children: Query<'w, 's, &'static Children, With<Node>>,
 }
 
@@ -169,6 +170,9 @@ fn select_entities_node(
                 }
                 SelectorElement::Component(component) => {
                     get_entities_with_component(component.as_str(), world, registry, filter)
+                }
+                SelectorElement::PsuedoClass(psuedo_class) => {
+                    get_entities_with(psuedo_class.as_str(), &css_query.interactions, filter)
                 }
                 // All child elements are filtered by [`get_parent_tree`](Selector::get_parent_tree)
                 SelectorElement::Child => unreachable!(),
