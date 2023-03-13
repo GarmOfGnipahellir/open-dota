@@ -1,3 +1,4 @@
+mod bxml;
 mod loader;
 mod widget;
 mod widget_registry;
@@ -12,6 +13,6 @@ impl Plugin for MarkupUiPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugin(EcssPlugin::default())
             .init_resource::<widget_registry::AppWidgetRegistry>()
-            .init_asset_loader::<loader::HtmlLoader>();
+            .init_asset_loader::<bxml::BxmlLoader>();
     }
 }

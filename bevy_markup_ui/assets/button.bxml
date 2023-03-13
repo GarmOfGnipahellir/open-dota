@@ -1,0 +1,8 @@
+<BXML>
+  <Style src="button.bss" />
+  <Node class="box">
+    <Button>
+      <Text>Button</Text>
+    </Button>
+  </Node>
+</BXML>
