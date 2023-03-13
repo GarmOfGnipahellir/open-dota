@@ -1,6 +1,6 @@
 <BXML>
-  <Style src="button.bss" />
-  <Node class="box">
+  <Style src="button.css" />
+  <Node name="container">
     <Button>
       <Text>Button</Text>
     </Button>
