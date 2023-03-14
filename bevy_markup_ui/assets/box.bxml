@@ -1,0 +1,13 @@
+<BXML>
+    <Bundle>
+        <Component type="Node" />
+        <Component type="Style" />
+        <Component type="BackgroundColor" />
+        <Component type="FocusPolicy" />
+        <Component type="Transform" />
+        <Component type="GlobalTransform" />
+        <Component type="Visibility" />
+        <Component type="ComputedVisibility" />
+        <Component type="ZIndex" />
+    </Bundle>
+</BXML>

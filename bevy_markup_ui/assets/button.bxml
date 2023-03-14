@@ -1,8 +1,11 @@
 <BXML>
-  <Style src="button.css" />
-  <Node name="container">
+  <Template src="box.bxml" tag="Box" />
+
+  <StyleSheet src="button.css" />
+
+  <Box name="container">
     <Button>
       <Text>Button</Text>
     </Button>
-  </Node>
+  </Box>
 </BXML>
